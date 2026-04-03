@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find /Users/jcvd/GitHub/fishing_grounds -name *.csv -o -name *.json -o -name *.md -o -name *.txt)",
+      "Bash(du -sh /Users/jcvd/GitHub/fishing_grounds/data/* /Users/jcvd/GitHub/fishing_grounds/results/*)",
+      "Bash(find /Users/jcvd/GitHub/fishing_grounds -name *.R -o -name *.Rmd)",
+      "Bash(grep -r gear /Users/jcvd/GitHub/fishing_grounds --include=*.R --include=*.md)",
+      "Bash(file /Users/jcvd/GitHub/fishing_grounds/results/img/*.png)",
+      "WebSearch",
+      "Bash(cp /Users/jcvd/GitHub/fishing_grounds/data/output/fishing_grounds.rds /Users/jcvd/GitHub/fishing_grounds/data/output/fishing_grounds_v1.rds)",
+      "Bash(cp /Users/jcvd/GitHub/fishing_grounds/data/output/gear_dbscan_params.rds /Users/jcvd/GitHub/fishing_grounds/data/output/gear_dbscan_params_v1.rds)"
+    ]
+  }
+}
