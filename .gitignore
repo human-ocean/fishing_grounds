@@ -58,3 +58,5 @@ data/output/
 
 # Large plot artifacts
 Rplots.pdf
+.positai
+.claude
