@@ -1,4 +1,4 @@
-# Data and code for "A data-driven method for identifying fisher-level fishing grounds from vessel-tracking data"
+# Data and code for "Data-Driven Identification of Vessel-Level Fishing Grounds"
 
 ## Pipeline
 
