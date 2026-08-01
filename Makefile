@@ -1,15 +1,40 @@
 all: figures tables
 
-figures: results/img/fig_grounds_map.png results/img/fig_space_utilization.png results/img/fig_revisitation.png results/img/fig_seasonality.png results/img/fig_pairwise_overlap.png results/img/fig_eps_calibration.png results/img/fig_minpts_distribution.png
+figures: results/img/fig_grounds_map.png results/img/fig_space_utilization.png results/img/fig_revisitation.png results/img/fig_seasonality.png results/img/fig_pairwise_overlap.png results/img/fig_eps_calibration.png results/img/fig_minpts_distribution.png results/img/fig_grounds_exposed_by_year.png results/img/fig_hurricanes_per_ground.png
 
-tables: results/tab/gear_summary_table.csv results/tab/gini_concentration.csv
+tables: results/tab/gear_summary_table.csv results/tab/gini_concentration.csv results/tab/grounds_exposure_summary.csv results/tab/hurricanes_per_ground.csv
 
 makefile-dag.png: Makefile
 	make -Bnd | make2graph -b | dot -Tpng -Gdpi=300 -o makefile-dag.png
 
-## CONTENT #####################################################################
+## HURRICANE CONTENT ###########################################################
 
-results/img/fig_grounds_map.png results/img/fig_space_utilization.png results/img/fig_revisitation.png results/img/fig_seasonality.png results/img/fig_pairwise_overlap.png results/img/fig_eps_calibration.png results/img/fig_minpts_distribution.png results/tab/gear_summary_table.csv results/tab/gini_concentration.csv: scripts/03_content/01_figures.R data/processed/pairwise_overlap.rds data/processed/ground_seasonality.rds
+results/img/fig_grounds_exposed_by_year.png results/img/fig_hurricanes_per_ground.png results/tab/grounds_exposure_summary.csv results/tab/hurricanes_per_ground.csv: scripts/03_content/02_hurricane_figures.R data/processed/hurricane_ground_exposure.rds
+	cd $(<D); Rscript $(<F)
+
+## CONTENT: CALIBRATION ########################################################
+
+results/img/fig_minpts_distribution.png results/img/fig_eps_calibration.png: scripts/03_content/01_calibration_figures.R data/output/vessel_params.rds data/output/gear_eps.rds data/output/per_vessel_eps.rds data/raw/mex_vms_tracks.rds
+	cd $(<D); Rscript $(<F)
+
+## CONTENT: GROUNDS MAP ########################################################
+
+results/img/fig_grounds_map.png: scripts/03_content/03_grounds_map.R data/output/fishing_grounds.rds
+	cd $(<D); Rscript $(<F)
+
+## CONTENT: SPACE UTILIZATION ##################################################
+
+results/img/fig_space_utilization.png results/img/fig_pairwise_overlap.png results/tab/gear_summary_table.csv results/tab/gini_concentration.csv: scripts/03_content/04_space_utilization.R data/processed/vessel_area.rds data/processed/pairwise_overlap.rds data/processed/gini_concentration.rds
+	cd $(<D); Rscript $(<F)
+
+## CONTENT: REVISITATION #######################################################
+
+results/img/fig_revisitation.png results/img/fig_seasonality.png: scripts/03_content/05_revisitation.R data/processed/visit_dates.rds data/processed/inter_visit_intervals.rds data/processed/ground_seasonality.rds
+	cd $(<D); Rscript $(<F)
+
+## HURRICANE EXPOSURE ##########################################################
+
+data/processed/hurricane_ground_exposure.rds: scripts/02_analysis/05_exposure_to_hurricanes.R data/output/fishing_grounds.rds data/processed/visit_dates.rds
 	cd $(<D); Rscript $(<F)
 
 ## ANALYSIS ####################################################################
