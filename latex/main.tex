@@ -3,17 +3,17 @@
 \usepackage{amsmath}
 \usepackage{graphicx}
 \usepackage{hyperref}
+\usepackage{placeins}
 \usepackage[numbers]{natbib}
 
 
 \usepackage{setspace}
-\doublespacing
+\onehalfspacing
 
 \usepackage{lineno}
 \linenumbers
 
 \usepackage{authblk}
-\usepackage{placeins}
 
 % Tables
 \usepackage{threeparttable}
@@ -41,7 +41,7 @@
     \maketitle
 
     \begin{abstract}
-    
+        Knowing the precise location of fishing operations is crucial to managing fish stocks, guiding marine spatial planning and conservation policies, and understanding fisheries' exposure to environmental hazards. While the increased availability of open source vessel-tracking data allow us to track vessels, we still lack a standardized, data-driven method to identify fishing grounds. Here, we develop a heuristic that relies on a single discoverable parameter---the expected daily amount of time a vessel spends in a fishing ground--- to identify vessel-level fishing grounds. Our approach relies on two well-known data mining algorithms, the Density-Based Spatial Clustering for Applications with Noise (DBSCAN) and K-Nearest Neighbors, to identify fishing grounds based on vessel-tracking data. Using Mexico's vessel-monitoring systems data, we identify X fishing ground belonging to N fishing vessels that use five different gears. We then perform to applied exercises. First, we quantify habitat utilization and revisitation rates, fidning that X, Y, and Z. We then show how the identified fishing grounds can be used to measure vessel-level exposure to environmental hazards by using hurricane sin the Gulf of Mexico as an example.
     \end{abstract}
 \end{singlespace}
 
@@ -52,21 +52,23 @@
 
 % Blah blah about fisheries
 % Motivation:
-% -Why do we need to know where vessels fish?
-    % from management, knowing where effort is applied tells us where catch comes from.
-    % For spatial management, clarity on potential overlap.
-    % For fisheries climate-ecoometrics, gridded data come short
-    % For MPA design, gridded data come short
-% Previous work on fishing grounds from tracking data
-% Kroodsma first global footprint (aggregated across vessels)
-% \citep{Jennings2012-tp} maybe does it on a gridf?
-% \citep{Torres-Irineo2021-pq} used Generalized Linear/Additive/Boosting Models (GLM, GAM, GBM, respectively), Classification Tree Analysis (CTA), Artificial Neural Network (ANN), Surface Range Envelope (SRE), Flexible Discriminant Analysis (FDA), Multiple Adaptive Regression Splines (MARS), and RF to build species distribution models (not the same as actual grounds).
+Why do we need to know where vessels fish? from management, knowing where effort is applied tells us where catch comes from. For spatial management, clarity on potential overlap. For fisheries climate-econometrics, gridded data come short. For MPA design, gridded data come short (``equitable designed'' / 1\% of fleet might be 100\% of me). \citep{Orofino2023-op, Raynor2026-ud}
+
+Previous work on identifying fishing grounds from tracking data: \citet{Kroodsma2018-xq} first global footprint (aggregated across vessels); \citep{Jennings2012-tp} maybe does it on a grid? \citep{Torres-Irineo2021-pq} used Generalized Linear/Additive/Boosting Models (GLM, GAM, GBM, respectively), Classification Tree Analysis (CTA), Artificial Neural Network (ANN), Surface Range Envelope (SRE), Flexible Discriminant Analysis (FDA), Multiple Adaptive Regression Splines (MARS), and RF to build species distribution models (not the same as actual grounds).
+
+Technological advances in vessel-tracking technologies, publicly available data, and improvements in high performance computing now allow us to precisely track the location of thousands of fishing vessels in near-real time. And yet, these data are often summarized and aggregated across spatial and temporal scales imposed by the researcher, loosing important variation in how vessels utilize marine space. 
 
 Previous work set defensible but arbitrarily chosen thresholds on the spatial resolution for the identification of fishing grounds. For example, X did A and Y did B. The same is true for temporal thresholds, where a specific number of hours are required for the activity within a grid cell to count. My method differs in a few ways. First, the spatial scale is determined by the data themselves and are a product of the time required for a fishing ground to count as such. Second, because the size of a fishing ground depends on utilization intensity rather than fixed by the researcher, it is possible to perform robustness checks to determine how the chosen utilization density affects it. And, finally, because the utilization density can be easily identified with a simple question posed to fishers: ``\textit{When you go out to fish, how much time do you spend in a given place before relocating or coming back to port?}``
 
 \section{Data and Methods}
 
 \subsection{Vessel-Monitoring Systems Data}
+
+Vessel-tracking data come from Mexico's Satellite Fisheries Monitoring Program (``Sistema de Monitoreo de Embarcaciones Pesqueras''; \citet{sismep}). The data are pre-procesed through a data standardization, cleaning, and fusion pipeline to make them analysis-ready \citep{Villasenor-Derbez2026-ae}. The pipeline includes removing observations on land, segmenting tracks, and calculating time spent at each location (defined as the time elapsed since the last ping). The resulting data set contains the vessel identifier, timestamp, coordinates, and vessel characteristics (fishing gear, target species).
+
+\subsection{Data Processing and Sample Construction}
+
+The vessel registry reports the fishing gear and target species for which each vessel holds a license. We use this information to group vessels into five fleets: (1) vessels with bottom trawls and shrimp permit were classified as shrimp trawlers (N = X), (2) vessels with longlines and a demersal finfish permit were classified as set longlines (N = X), (3) vessels with longine and a tuna fishing permit were classified as pelagic longlines (N = X), (4) vessels with purse seines and a sardine/anchovy permit were classified as small pelagic purse seines, and (5) vessels with a purse seine and a tuna fishing permit were classified as tuna purse seiners.
 
 \subsection{Identifying Fishing Grounds}
 
@@ -75,9 +77,25 @@ Previous work set defensible but arbitrarily chosen thresholds on the spatial re
 \subsection{Application 2: Exposure to Environmental Hazards}
 
 
+
 \section{Results}
 
+\FloatBarrier
 \subsection{Fishing Grounds}
+
+\begin{figure}[tbh!]
+    \centering
+    \includegraphics[width=0.95\linewidth]{results/img/fig_eps_calibration.png}
+    \caption{Caption}
+    \label{fig:placeholder}
+\end{figure}
+
+\begin{figure}[tbh!]
+    \centering
+    \includegraphics[width=0.95\linewidth]{results/img/fig_minpts_distribution.png}
+    \caption{Caption}
+    \label{fig:placeholder}
+\end{figure}
 
 \begin{figure}[tbh!]
     \centering
@@ -86,6 +104,7 @@ Previous work set defensible but arbitrarily chosen thresholds on the spatial re
     \label{fig:placeholder}
 \end{figure}
 
+\FloatBarrier
 \subsection{Application 1: Space Utilization, Overlap, Re-visitation Rates, and Seasonality}
 
 \begin{figure}[tbh!]
@@ -116,9 +135,8 @@ Previous work set defensible but arbitrarily chosen thresholds on the spatial re
     \label{fig:placeholder}
 \end{figure}
 
+\FloatBarrier
 \subsection{Application 2: Exposure to Environmental Hazards}
-
-
 
 \section{Discussion and Conclusions}
 
