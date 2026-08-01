@@ -86,22 +86,22 @@ The vessel registry reports the fishing gear and target species for which each v
 \begin{figure}[tbh!]
     \centering
     \includegraphics[width=0.95\linewidth]{results/img/fig_eps_calibration.png}
-    \caption{Caption}
-    \label{fig:placeholder}
+    \caption{Per-vessel estimates of the DBSCAN neighborhood radius (eps), derived from the elbow of K-Nearest Neighbor distance curves. Red diamonds indicate the gear-level median used for clustering.}
+    \label{fig:eps_calibration}
 \end{figure}
 
 \begin{figure}[tbh!]
     \centering
     \includegraphics[width=0.95\linewidth]{results/img/fig_minpts_distribution.png}
-    \caption{Caption}
-    \label{fig:placeholder}
+    \caption{Distribution of the vessel-specific minimum-points parameter (minPts) across gear types. minPts is set proportional to each vessel's years of data, following a domain rule of five hours per day for five days per year.}
+    \label{fig:minpts_distribution}
 \end{figure}
 
 \begin{figure}[tbh!]
     \centering
     \includegraphics[width=0.95\linewidth]{results/img/fig_grounds_map.png}
-    \caption{Caption}
-    \label{fig:placeholder}
+    \caption{Spatial distribution of identified fishing grounds along Mexico's coasts, faceted by gear type. Each polygon represents the convex hull of a vessel-level fishing ground identified by DBSCAN.}
+    \label{fig:grounds_map}
 \end{figure}
 
 \FloatBarrier
@@ -110,29 +110,29 @@ The vessel registry reports the fishing gear and target species for which each v
 \begin{figure}[tbh!]
     \centering
     \includegraphics[width=0.95\linewidth]{results/img/fig_space_utilization.png}
-    \caption{Caption}
-    \label{fig:placeholder}
+    \caption{Total fishing area and number of fishing grounds per vessel, by gear type. Fishing area is the sum of convex hull areas across all grounds belonging to each vessel.}
+    \label{fig:space_utilization}
 \end{figure}
 
 \begin{figure}[tbh!]
     \centering
     \includegraphics[width=0.95\linewidth]{results/img/fig_pairwise_overlap.png}
-    \caption{Caption}
-    \label{fig:placeholder}
+    \caption{Distribution of pairwise Jaccard spatial overlap between vessels within each gear type. Higher values indicate greater sharing of fishing grounds across vessels.}
+    \label{fig:pairwise_overlap}
 \end{figure}
 
 \begin{figure}[tbh!]
     \centering
     \includegraphics[width=0.95\linewidth]{results/img/fig_revisitation.png}
-    \caption{Caption}
-    \label{fig:placeholder}
+    \caption{Revisitation patterns by gear type. Top row: distribution of the number of distinct visit dates per fishing ground. Bottom row: distribution of the median inter-visit interval in days.}
+    \label{fig:revisitation}
 \end{figure}
 
 \begin{figure}[tbh!]
     \centering
     \includegraphics[width=0.95\linewidth]{results/img/fig_seasonality.png}
-    \caption{Caption}
-    \label{fig:placeholder}
+    \caption{Fraction of fishing grounds classified as seasonal versus year-round by gear type. Grounds active in ten or more months are classified as year-round.}
+    \label{fig:seasonality}
 \end{figure}
 
 \FloatBarrier
