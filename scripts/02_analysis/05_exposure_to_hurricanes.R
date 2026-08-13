@@ -92,14 +92,14 @@ hur_na <- read_csv(paste0(base_url, "/ibtracs.NA.list.v04r01.csv"),
                    skip = 2,
                    show_col_types = FALSE)
 
-hurricanes <- hur_na |>
+hurricanes_na <- hur_na |>
   filter(between(SEASON, 2007, 2024),
          NAME != "UNNAMED") |>
   select(name = NAME, year = SEASON, date = ISO_TIME,
          latitude = LAT, longitude = LON,
          wind = USA_WIND) |>
   mutate(
-    date_parsed = ymd_hms(date),
+    date_parsed = as_datetime(date),
     date = paste0(
       year(date_parsed),
       str_pad(month(date_parsed), 2, pad = "0"),
@@ -114,6 +114,19 @@ hurricanes <- hur_na |>
 storm_ids <- unique(hurricanes$storm_id)
 n_storms <- length(storm_ids)
 message(sprintf("Found %d named storms in NA basin (2007-2024)", n_storms))
+
+## Identify hurricanes in the GoM
+gom_storm_ids <- hurricanes_na |> 
+  filter(between(longitude, -108, -85),
+         between(latitude, 15, 32)) |> 
+  pull(storm_id) |> 
+  unique()
+
+hurricanes_gom <- hurricanes_na |> 
+  filter(storm_id %in% gom_storm_ids)
+
+n_gom_storms <- length(gom_storm_ids)
+message(sprintf("Found %d named storms in the Gulf of Mexico (2007-2024)", n_gom_storms))
 
 # COMPUTE EXPOSURE PER STORM ##################################################
 
@@ -194,8 +207,8 @@ compute_storm_exposure <- function(track, full_grid, storm_id) {
 plan(multisession, workers = min(4L, parallel::detectCores() - 1L))
 
 message("\nComputing exposure for each storm...")
-hurricanes |>
-  split(hurricanes$storm_id) |>
+hurricanes_gom |>
+  split(hurricanes_gom$storm_id) |>
   future_walk(
     \(track) compute_storm_exposure(track,
                                     full_grid = grounds_grid,
