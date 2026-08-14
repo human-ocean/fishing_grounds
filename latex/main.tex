@@ -68,9 +68,48 @@ Vessel-tracking data come from Mexico's Satellite Fisheries Monitoring Program (
 
 \subsection{Data Processing and Sample Construction}
 
-The vessel registry reports the fishing gear and target species for which each vessel holds a license. We use this information to group vessels into five fleets: (1) vessels with bottom trawls and shrimp permit were classified as shrimp trawlers (N = X), (2) vessels with longlines and a demersal finfish permit were classified as set longlines (N = X), (3) vessels with longine and a tuna fishing permit were classified as pelagic longlines (N = X), (4) vessels with purse seines and a sardine/anchovy permit were classified as small pelagic purse seines, and (5) vessels with a purse seine and a tuna fishing permit were classified as tuna purse seiners.
 
+We begin by splitting our sample into five main fleets because vessels using different gears and targeting different species move differently and therefore have different density utilizations. For example, a shrimp trawler often operates in smaller, localized areas known to have shrimp, while a tuna purse seiner that needs to scour the seas to find tuna schools. The vessel registry reports the fishing gear and target species for which each vessel holds a license. We use this information to group vessels into five fleets: (1) vessels with bottom trawls and shrimp permit were classified as shrimp trawlers (N = X), (2) vessels with longlines and a demersal finfish permit were classified as set longlines (N = X), (3) vessels with longine and a tuna fishing permit were classified as pelagic longlines (N = X), (4) vessels with purse seines and a sardine/anchovy permit were classified as small pelagic purse seines, and (5) vessels with a purse seine and a tuna fishing permit were classified as tuna purse seiners.
+
+We then determine whether a vessel is fishing based on speed thresholds defined in \autoref{tab:speed_thresholds}.
+
+\begin{table}[t]
+    \centering
+    \caption{Caption}
+    \begin{tabular}{lcc}
+        \toprule
+        Fleet  & Speed range (knots) & Source \\
+        \midrule
+        Shrimp trawl              & 1 - 5   &  ADD CITATION HERE \\
+        Set longline              & 2 - 6   &  ADD CITATION HERE \\
+        Drifting longline         & 2 - 9   &  ADD CITATION HERE \\
+        Small pelagic purse seine & 1 - 4   &  ADD CITATION HERE \\
+        Tuna purse seine          & 1 - 4   &  ADD CITATION HERE \\
+        \bottomrule
+    \end{tabular}
+    \label{tab:speed_thresholds}
+\end{table}
+
+      
 \subsection{Identifying Fishing Grounds}
+
+How DBSCAN works...
+
+We define a fishing ground as a location with at least 5 hours of fishing activity on at least 5 distinct days per year. Since VMS pings are recorded at approximately hourly intervals, this translates to a base threshold of 25 pings per vessel-year of data. For each vessel, minPts = 25 $\times$ $N_{\text{years}}$, where $N_{\text{years}}$ is the number of distinct calendar years in the vessel's track. This scaling ensures that vessels with longer records must demonstrate sustained, repeated use of a location for it to qualify as a fishing ground.
+
+We recognize that our 5-hours and 5-days is defensible yet arbitrary choice used to exemplify the application of the algorithm. In practice, the researcher would have the opportunity to derive this thresholds form previous work, or by directly interacting with the fishers. A robustness tests using different thresholds is presented in our Supplementary Materials section~\ref{sec:robustness}.
+
+The neighborhood radius (eps parameter) was then calibrated per gear type using per-vessel $k$-nearest-neighbour ($k$-NN) distance curves with $k$ = 25. For each qualifying vessel (those with $\geq$ 50 pings), we computed the sorted $k$-NN distance curve and detected the elbow by identifying the maximum perpendicular distance from the line connecting the first and last points (\autoref{fig:knee}). The gear-level eps value is the median of all per-vessel elbow estimates. The resulting values are shown in \autoref{tab:eps_parameters}.
+
+\begin{figure}[tbh!]
+    \centering
+    \includegraphics[width=0.95\linewidth]{results/img/fig_eps_calibration.png}
+    \caption{This figure will show how the knn neighbor is used to find the eps given a threshold of number of points.}
+    \label{fig:knee}
+\end{figure}
+
+%% Add table of min, median, mean, max and sd of eps parameter by vessel class
+
 
 \subsection{Application 1: Space Utilization, Overlap, Re-visitation Rates, and Seasonality}
 
@@ -86,22 +125,22 @@ The vessel registry reports the fishing gear and target species for which each v
 \begin{figure}[tbh!]
     \centering
     \includegraphics[width=0.95\linewidth]{results/img/fig_eps_calibration.png}
-    \caption{Per-vessel estimates of the DBSCAN neighborhood radius (eps), derived from the elbow of K-Nearest Neighbor distance curves. Red diamonds indicate the gear-level median used for clustering.}
-    \label{fig:eps_calibration}
+    \caption{Caption}
+    \label{fig:placeholder}
 \end{figure}
 
 \begin{figure}[tbh!]
     \centering
     \includegraphics[width=0.95\linewidth]{results/img/fig_minpts_distribution.png}
-    \caption{Distribution of the vessel-specific minimum-points parameter (minPts) across gear types. minPts is set proportional to each vessel's years of data, following a domain rule of five hours per day for five days per year.}
-    \label{fig:minpts_distribution}
+    \caption{Caption}
+    \label{fig:placeholder}
 \end{figure}
 
 \begin{figure}[tbh!]
     \centering
     \includegraphics[width=0.95\linewidth]{results/img/fig_grounds_map.png}
-    \caption{Spatial distribution of identified fishing grounds along Mexico's coasts, faceted by gear type. Each polygon represents the convex hull of a vessel-level fishing ground identified by DBSCAN.}
-    \label{fig:grounds_map}
+    \caption{Caption}
+    \label{fig:placeholder}
 \end{figure}
 
 \FloatBarrier
@@ -110,29 +149,29 @@ The vessel registry reports the fishing gear and target species for which each v
 \begin{figure}[tbh!]
     \centering
     \includegraphics[width=0.95\linewidth]{results/img/fig_space_utilization.png}
-    \caption{Total fishing area and number of fishing grounds per vessel, by gear type. Fishing area is the sum of convex hull areas across all grounds belonging to each vessel.}
-    \label{fig:space_utilization}
+    \caption{Caption}
+    \label{fig:placeholder}
 \end{figure}
 
 \begin{figure}[tbh!]
     \centering
     \includegraphics[width=0.95\linewidth]{results/img/fig_pairwise_overlap.png}
-    \caption{Distribution of pairwise Jaccard spatial overlap between vessels within each gear type. Higher values indicate greater sharing of fishing grounds across vessels.}
-    \label{fig:pairwise_overlap}
+    \caption{Caption}
+    \label{fig:placeholder}
 \end{figure}
 
 \begin{figure}[tbh!]
     \centering
     \includegraphics[width=0.95\linewidth]{results/img/fig_revisitation.png}
-    \caption{Revisitation patterns by gear type. Top row: distribution of the number of distinct visit dates per fishing ground. Bottom row: distribution of the median inter-visit interval in days.}
-    \label{fig:revisitation}
+    \caption{Caption}
+    \label{fig:placeholder}
 \end{figure}
 
 \begin{figure}[tbh!]
     \centering
     \includegraphics[width=0.95\linewidth]{results/img/fig_seasonality.png}
-    \caption{Fraction of fishing grounds classified as seasonal versus year-round by gear type. Grounds active in ten or more months are classified as year-round.}
-    \label{fig:seasonality}
+    \caption{Caption}
+    \label{fig:placeholder}
 \end{figure}
 
 \FloatBarrier
@@ -143,5 +182,29 @@ The vessel registry reports the fishing gear and target species for which each v
 \bibliographystyle{unsrtnat}
 \bibliography{references.bib}
 
+%%%%%%%%%%%%%%%%%%%% APPENDIX %%%%%%%%%%%%%%%%%%%%%%%%%%
+\appendix
+
+\counterwithin{figure}{section}
+\counterwithin{table}{section}
+\renewcommand\thefigure{\thesection\arabic{figure}}
+\renewcommand\thetable{\thesection\arabic{table}}
+%------------------------------------------%
+%           Appendix Cover Page
+%------------------------------------------%
+\clearpage
+\thispagestyle{empty}
+\begin{center}
+\vspace*{5cm}
+{\LARGE \textbf{Appendix}}\\[2cm]
+{\large Supplementary Materials}\\[0.5cm]
+{\large For}\\[0.5cm]
+{\large \textbf{Data-Driven Identification of Vessel-Level Fishing Grounds}}
+\end{center}
+\clearpage
+
+\section{Other Figures and Tables}
+
+\section{Robustness to Other Minimum Utilization Thresholds}\label{sec:robustness}
 
 \end{document}
