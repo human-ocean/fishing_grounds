@@ -32,3 +32,12 @@ Do not edit manually unless you are intentionally maintaining the template. -->
 - Scope: All Quarto revealjs slide decks (`qmd/**/*.qmd`)
 - Evidence: User correction when translating `GulfCon26/GulfCon.tex` to `GulfCon26/GulfCon.qmd`
 - Action: When generating revealjs slides, always use `{.fragment}` divs (not `. . .`) for incremental content inside column layouts. `. . .` remains fine outside columns.
+
+[LEARN:unit-mismatch]
+- Date: 2026-08-13
+- Trigger: Filtering `stormwindmodel` output with `vmax_sust >= 34` intending tropical storm force
+- Wrong: Using 34 as the threshold, assuming the package returns knots. `stormwindmodel` returns wind speeds in **meters per second**, so 34 m/s ≈ 66 kt (hurricane force), not tropical storm force.
+- Right: Convert named meteorological thresholds to the package's native units before applying. Tropical storm force = 34 kt = ~17.5 m/s.
+- Scope: Any R script using `stormwindmodel` or similar modelling packages with non-obvious output units
+- Evidence: `scripts/02_analysis/05_exposure_to_hurricanes.R` line 197 filter was cutting at hurricane intensity instead of tropical storm intensity
+- Action: Always check the documentation for output units of modelling packages before applying numeric thresholds. Never assume meteorological convention (knots) — verify.
