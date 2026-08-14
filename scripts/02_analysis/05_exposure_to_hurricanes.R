@@ -117,8 +117,8 @@ message(sprintf("Found %d named storms in NA basin (2007-2024)", n_storms))
 
 ## Identify hurricanes in the GoM
 gom_storm_ids <- hurricanes_na |> 
-  filter(between(longitude, -108, -85),
-         between(latitude, 15, 32)) |> 
+  filter(between(longitude, -98, -80),
+         between(latitude, 15, 31)) |> 
   pull(storm_id) |> 
   unique()
 
@@ -136,13 +136,13 @@ message(sprintf("Found %d named storms in the Gulf of Mexico (2007-2024)", n_gom
 #' @param full_grid Full grid of fishing ground centroids with visit metadata.
 #' @param storm_id Character string identifying the storm (YEAR_NAME).
 #' @return Invisibly returns NULL; writes RDS to disk.
-compute_storm_exposure <- function(track, full_grid, storm_id) {
+compute_storm_exposure <- function(track, full_grid, storm_id, force_output = F) {
 
   out_path <- here("data/processed/hurricane_exposure", paste0(storm_id, ".rds"))
 
   # Skip if already computed
 
-  if (file.exists(out_path)) {
+  if (file.exists(out_path) && !force_output) {
     message(sprintf("  [skip] %s already exists", storm_id))
     return(invisible(NULL))
   }
@@ -194,7 +194,7 @@ compute_storm_exposure <- function(track, full_grid, storm_id) {
     group_by(grid_id, vessel_rnpa, cluster, gear_type, glon, glat, date) |>
     summarize(vmax_sust = max(vmax_sust, na.rm = TRUE),
               .groups = "drop") |>
-    filter(vmax_sust >= 34) |>
+    filter(vmax_sust >= 17.5) |>
     mutate(storm_id = storm_id)
 
   write_rds(ts, out_path)
@@ -212,7 +212,8 @@ hurricanes_gom |>
   future_walk(
     \(track) compute_storm_exposure(track,
                                     full_grid = grounds_grid,
-                                    storm_id = unique(track$storm_id)),
+                                    storm_id = unique(track$storm_id),
+                                    force_output = T),
     .options = furrr_options(seed = TRUE)
   )
 
