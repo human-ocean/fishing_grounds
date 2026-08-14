@@ -51,8 +51,8 @@ po/*~
 # RStudio Connect folder
 rsconnect/
 
-# Data — tracked via git LFS if > 70 MB
-# (previously gitignored; now committed to prevent cross-machine rebuild)
+# Data — large raw files are gitignored (too large for git, LFS incompatible with Overleaf)
+data/raw/
 
 # Large plot artifacts
 Rplots.pdf
