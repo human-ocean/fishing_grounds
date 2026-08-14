@@ -8,8 +8,8 @@
 # Produces:
 #   - results/img/fig_space_utilization.png
 #   - results/img/fig_pairwise_overlap.png
-#   - results/tab/gear_summary_table.csv
-#   - results/tab/gini_concentration.csv
+#   - results/tab/gear_summary_table.tex
+#   - results/tab/gini_concentration.tex
 #
 # Inputs:
 #   data/processed/vessel_area.rds
@@ -101,7 +101,11 @@ if (nrow(overlap_results) > 0) {
 
 ## 3. SUMMARY TABLES ###########################################################
 
-write_csv(gini, here("results/tab/gini_concentration.csv"))
+writeLines(
+  knitr::kable(gini |> mutate(gear_type = gear_labels[gear_type]),
+               format = "latex", booktabs = TRUE),
+  here("results/tab/gini_concentration.tex")
+)
 
 gear_table <- vessel_area |>
   group_by(gear_type) |>
@@ -113,9 +117,13 @@ gear_table <- vessel_area |>
     median_hours = round(median(total_fg_hours), 1),
     .groups = "drop"
   ) |>
-  left_join(gini, by = "gear_type")
+  left_join(gini, by = "gear_type") |>
+  mutate(gear_type = gear_labels[gear_type])
 
-write_csv(gear_table, here("results/tab/gear_summary_table.csv"))
+writeLines(
+  knitr::kable(gear_table, format = "latex", booktabs = TRUE),
+  here("results/tab/gear_summary_table.tex")
+)
 
-message("Saved: results/tab/gini_concentration.csv")
-message("Saved: results/tab/gear_summary_table.csv")
+message("Saved: results/tab/gini_concentration.tex")
+message("Saved: results/tab/gear_summary_table.tex")

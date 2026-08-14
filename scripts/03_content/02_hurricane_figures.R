@@ -16,8 +16,8 @@
 # Outputs:
 #   results/img/fig_grounds_exposed_by_year.png
 #   results/img/fig_hurricanes_per_ground.png
-#   results/tab/grounds_exposure_summary.csv
-#   results/tab/hurricanes_per_ground.csv
+#   results/tab/grounds_exposure_summary.tex
+#   results/tab/hurricanes_per_ground.tex
 #
 ################################################################################
 
@@ -85,8 +85,12 @@ exposure_summary <- active_by_year |>
   mutate(pct_exposed = 100 * n_grounds_exposed / n_grounds_total)
 
 # Save table
-write_csv(exposure_summary, here("results/tab/grounds_exposure_summary.csv"))
-message("Saved: results/tab/grounds_exposure_summary.csv")
+writeLines(
+  knitr::kable(exposure_summary |> mutate(gear_type = gear_labels[gear_type]),
+               format = "latex", booktabs = TRUE),
+  here("results/tab/grounds_exposure_summary.tex")
+)
+message("Saved: results/tab/grounds_exposure_summary.tex")
 
 # Figure: number and % of grounds exposed
 p_n <- exposure_summary |>
@@ -135,8 +139,12 @@ hur_summary <- hur_per_ground |>
     .groups = "drop"
   )
 
-write_csv(hur_summary, here("results/tab/hurricanes_per_ground.csv"))
-message("Saved: results/tab/hurricanes_per_ground.csv")
+writeLines(
+  knitr::kable(hur_summary |> mutate(gear_type = gear_labels[gear_type]),
+               format = "latex", booktabs = TRUE),
+  here("results/tab/hurricanes_per_ground.tex")
+)
+message("Saved: results/tab/hurricanes_per_ground.tex")
 
 # Figure: distribution of hurricanes per ground
 p_hur <- hur_per_ground |>

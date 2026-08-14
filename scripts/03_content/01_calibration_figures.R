@@ -8,6 +8,7 @@
 # Produces:
 #   - results/img/fig_minpts_distribution.png
 #   - results/img/fig_eps_calibration.png
+#   - results/tab/eps_summary.tex
 #
 # Inputs:
 #   data/output/vessel_params.rds
@@ -25,6 +26,7 @@ pacman::p_load(
 )
 
 dir.create(here("results/img"), showWarnings = FALSE, recursive = TRUE)
+dir.create(here("results/tab"), showWarnings = FALSE, recursive = TRUE)
 
 vessel_params <- read_rds(here("data/output/vessel_params.rds"))
 gear_eps <- read_rds(here("data/output/gear_eps.rds"))
@@ -88,5 +90,25 @@ ggsave(
   plot = p_eps_box, width = 7, height = 5, dpi = 300
 )
 
+## 3. EPS SUMMARY TABLE ########################################################
+
+eps_summary <- per_vessel_eps |>
+  group_by(gear_type) |>
+  summarise(
+    min = round(min(vessel_eps) / 1e3, 1),
+    median = round(median(vessel_eps) / 1e3, 1),
+    mean = round(mean(vessel_eps) / 1e3, 1),
+    max = round(max(vessel_eps) / 1e3, 1),
+    sd = round(sd(vessel_eps) / 1e3, 1),
+    .groups = "drop"
+  ) |>
+  mutate(gear_type = gear_labels[gear_type])
+
+writeLines(
+  knitr::kable(eps_summary, format = "latex", booktabs = TRUE),
+  here("results/tab/eps_summary.tex")
+)
+
 message("Saved: results/img/fig_minpts_distribution.png")
 message("Saved: results/img/fig_eps_calibration.png")
+message("Saved: results/tab/eps_summary.tex")

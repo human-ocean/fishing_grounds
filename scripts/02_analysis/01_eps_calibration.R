@@ -89,8 +89,6 @@ print(gear_eps)
 
 ## DIAGNOSTIC PLOTS ############################################################
 
-dir.create(here("results/img"), showWarnings = FALSE, recursive = TRUE)
-
 # Boxplot of per-vessel eps by gear
 p_box <- ggplot(eps_results, aes(x = gear_type, y = vessel_eps / 1e3)) +
   geom_boxplot(outlier.alpha = 0.3) +
@@ -106,12 +104,6 @@ p_box <- ggplot(eps_results, aes(x = gear_type, y = vessel_eps / 1e3)) +
     subtitle = "Red diamond = median (gear-level eps)"
   ) +
   theme_minimal(base_size = 12)
-
-ggsave(
-  plot = p_box,
-  filename = here("results/img/dbscan_eps_boxplot.png"),
-  width = 7, height = 5, dpi = 200
-)
 
 # kNN distance curves for representative vessels
 representative <- eps_results |>
@@ -150,12 +142,6 @@ p_curves <- ggplot(knn_curves, aes(x = index, y = knn_dist / 1e3)) +
   theme_minimal(base_size = 12) +
   theme(legend.position = "none")
 
-ggsave(
-  plot = p_curves,
-  filename = here("results/img/dbscan_knn_curves.png"),
-  width = 10, height = 5, dpi = 200
-)
-
 ## EXPORT ######################################################################
 
 dir.create(here("data/output"), showWarnings = FALSE, recursive = TRUE)
@@ -165,5 +151,3 @@ write_rds(eps_results, here("data/output/per_vessel_eps.rds"))
 
 message("\nSaved: data/output/gear_eps.rds")
 message("Saved: data/output/per_vessel_eps.rds")
-message("Saved: results/img/dbscan_eps_boxplot.png")
-message("Saved: results/img/dbscan_knn_curves.png")
