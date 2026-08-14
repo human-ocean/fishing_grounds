@@ -28,4 +28,4 @@ The analysis pipeline is managed with `make`. Run `make` from the project root t
 
 | Script | Outputs |
 |---|---|
-| `03_content/01_figures.R` | `results/img/fig_*.png`, `results/tab/*.csv` |
+| `03_content/01_figures.R` | `results/img/fig_*.png`, `results/tab/*.tex` |
