@@ -121,7 +121,12 @@ gear_table <- vessel_area |>
   mutate(gear_type = gear_labels[gear_type])
 
 writeLines(
-  knitr::kable(gear_table, format = "latex", booktabs = TRUE),
+  knitr::kable(gear_table, format = "latex", booktabs = TRUE,
+               col.names = c("Gear type", "Vessels (#)",
+                             "Total grounds (#)", "Median grounds (#)",
+                             "Median area (km\\textsupersctipt{2})", "Median utilization (hours)",
+                             "Gini utilization",
+                             "Gini area")),
   here("results/tab/gear_summary_table.tex")
 )
 
