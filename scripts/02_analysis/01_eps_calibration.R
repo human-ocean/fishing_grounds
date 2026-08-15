@@ -23,9 +23,9 @@ pacman::p_load(
 
 sf_use_s2(FALSE)
 
-source(here("R/find_elbow.R"))
-source(here("R/project_to_metric.R"))
-source(here("R/minpts_rule.R"))
+source(here("scripts/00_helpers/find_elbow.R"))
+source(here("scripts/00_helpers/project_to_metric.R"))
+source(here("scripts/00_helpers/minpts_rule.R"))
 
 tracks <- read_rds(here("data/raw/mex_vms_tracks.rds"))
 
