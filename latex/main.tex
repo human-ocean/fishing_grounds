@@ -66,25 +66,25 @@ Previous work set defensible but arbitrarily chosen thresholds on the spatial re
 
 Vessel-tracking data come from Mexico's Satellite Fisheries Monitoring Program (``Sistema de Monitoreo de Embarcaciones Pesqueras''; \citet{sismep}). The data are pre-procesed through a data standardization, cleaning, and fusion pipeline to make them analysis-ready \citep{Villasenor-Derbez2026-ae}. The pipeline includes removing observations on land, segmenting tracks, and calculating time spent at each location (defined as the time elapsed since the last ping). The resulting data set contains the vessel identifier, timestamp, coordinates, and vessel characteristics (fishing gear, target species).
 
+\FloatBarrier
 \subsection{Data Processing and Sample Construction}
-
 
 We begin by splitting our sample into five main fleets because vessels using different gears and targeting different species move differently and therefore have different density utilizations. For example, a shrimp trawler often operates in smaller, localized areas known to have shrimp, while a tuna purse seiner that needs to scour the seas to find tuna schools. The vessel registry reports the fishing gear and target species for which each vessel holds a license. We use this information to group vessels into five fleets: (1) vessels with bottom trawls and shrimp permit were classified as shrimp trawlers (N = X), (2) vessels with longlines and a demersal finfish permit were classified as set longlines (N = X), (3) vessels with longine and a tuna fishing permit were classified as pelagic longlines (N = X), (4) vessels with purse seines and a sardine/anchovy permit were classified as small pelagic purse seines, and (5) vessels with a purse seine and a tuna fishing permit were classified as tuna purse seiners.
 
-We then determine whether a vessel is fishing based on speed thresholds defined in \autoref{tab:speed_thresholds}.
+We then determine whether a vessel is fishing based on speed thresholds defined in \autoref{tab:speed_thresholds}. Although imperfect, vessel speeds provide a low-cost solution to identify when a vessel might be engaged in fishing operations, but we note that this approach could also rely on predictions from a convolutional neural network \citep{Kroodsma2018-xq}, a gradient mixture model \citep{Dettloff2024-rm}, or via a number of other computational approaches (CTE OTHER STUFF HERE). Because the clustering algorithm employed to identify fishing grounds can handle noisy data by excluding them from the cluster, false positives are not a large reason for concern.
 
 \begin{table}[t]
     \centering
     \caption{Caption}
-    \begin{tabular}{lcc}
+    \begin{tabular}{lccc}
         \toprule
-        Gear type  & Speed range (knots) & Source \\
+        Gear type  & Speed range (knots) & N points & Source \\
         \midrule
-        Shrimp trawl              & 1 - 5   &  ADD CITATION HERE \\
-        Set longline              & 2 - 6   &  ADD CITATION HERE \\
-        Drifting longline         & 2 - 9   &  ADD CITATION HERE \\
-        Small pelagic purse seine & 1 - 4   &  ADD CITATION HERE \\
-        Tuna purse seine          & 1 - 4   &  ADD CITATION HERE \\
+        Shrimp trawl              & 1 - 5   &   &  ADD CITATION HERE \\
+        Set longline              & 2 - 6   &   &  ADD CITATION HERE \\
+        Drifting longline         & 2 - 9   &   &  ADD CITATION HERE \\
+        Small pelagic purse seine & 1 - 4   &   &  ADD CITATION HERE \\
+        Tuna purse seine          & 1 - 4   &   &  ADD CITATION HERE \\
         \bottomrule
     \end{tabular}
     \label{tab:speed_thresholds}
