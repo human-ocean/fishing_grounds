@@ -92,7 +92,7 @@ p_n <- exposure_summary |>
 p_pct <- exposure_summary |>
   ggplot(aes(x = year, y = pct_exposed, fill = gear_type)) +
   geom_col(alpha = 0.8) +
-  facet_wrap(~gear_type, scales = "free_y",
+  facet_wrap(~gear_type,
              labeller = as_labeller(gear_labels)) +
   scale_fill_brewer(palette = "Set2", guide = "none") +
   scale_y_continuous(labels = scales::percent_format(scale = 1)) +
