@@ -1,0 +1,73 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amssymb}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+% Checklist: every item gets an empty box to tick off
+\newlist{todolist}{itemize}{1}
+\setlist[todolist]{label=$\square$, leftmargin=*, itemsep=0.5em}
+
+% \path lets long file names break across lines
+\newcommand{\file}{\path}
+\raggedright
+
+\title{Manuscript To-Do}
+\author{Data-Driven Identification of Vessel-Level Fishing Grounds}
+\date{Last updated: 2026-11-11}
+
+\begin{document}
+
+\maketitle
+
+\noindent Covers \file{latex/main.tex}. Ordered by how much each item moves the manuscript forward.
+
+\section*{Writing (ready to write; outputs exist)}
+
+\begin{todolist}
+    \item \textbf{1. Results: Fishing Grounds.} No prose yet. Write from Table 2 (eps by gear), Table 3 (grounds, area, utilization, share of points in grounds, Gini) and the grounds map.
+
+    \item \textbf{2. Results: Application 1.} Four figures are in place (space utilization, pairwise overlap, revisitation, seasonality) with no text. Numbers are in \file{data/processed/} (\file{vessel_area}, \file{pairwise_overlap}, \file{inter_visit_intervals}, \file{ground_seasonality}).
+
+    \item \textbf{3. Application 2: Methods and Results.} Both subsections have no text. Figure 9 (percentage of grounds exposed per year, by gear) is now in Results. Methods need: storm tracks and wind model, the tropical-storm-force threshold (34 kt = 17.5 m/s), how a ground counts as exposed, and how a ground counts as active in a year. Reference: \file{scripts/02_analysis/05_exposure_to_hurricanes.R}.
+
+    \item \textbf{4. Methods: Application 1.} Empty heading. Define total fishing area, Jaccard overlap, the Gini coefficients, inter-visit intervals and the seasonality classification. Reference: \file{scripts/02_analysis/03_space_utilization.R} and \file{04_revisitation_rates.R}.
+
+    \item \textbf{5. ``How DBSCAN works...''} One-line stub in ``Identifying Fishing Grounds''. Explain eps, minPts, core points and noise, and why noise handling suits vessel tracks.
+
+    \item \textbf{6. Introduction.} Four paragraphs of notes (``Blah blah about fisheries'', ``X did A and Y did B'', ``maybe does it on a grid?''). Turn into prose. Only 7 references are cited; the prior-thresholds paragraph needs more.
+
+    \item \textbf{7. Discussion and Conclusions.} Empty. Candidate points: the single discoverable parameter, limits of the speed filter and convex hulls, and the low share of points in grounds for tuna purse seiners and longliners.
+
+    \item \textbf{8. Figure captions and labels.} Eight figures say ``Caption'' and share the label \file{fig:placeholder}, so none can be referenced. Table 1 also says ``Caption''. Check the captions Claude drafted for Table 2, Table 3 and Figure 9.
+\end{todolist}
+
+\section*{Not ready (need analysis, code or sources)}
+
+\begin{todolist}
+    \item \textbf{9. k-NN figure.} Figure 1's caption promises the k-NN distance curve and elbow, but the image is the boxplot of eps by gear, and the same image appears again in Results. \file{01_eps_calibration.R} computes the curves but no curve figure is saved to \file{results/img/}.
+
+    \item \textbf{10. Robustness appendix.} The text points to it (\file{sec:robustness}), but the section is empty and there is no robustness code in \file{scripts/}. Needs DBSCAN rerun at other minimum-utilization thresholds. Decide which thresholds first.
+\end{todolist}
+
+\section*{Before the flight (needs internet or compute)}
+
+\begin{todolist}
+    \item Download PDFs for the Introduction and for the speed-threshold sources.
+
+    \item Speed-threshold table (Table 1): every source says ``ADD CITATION HERE'' and the ``N points'' column is blank.
+
+    \item Regenerate the three figures that date from April, before the August data update: \file{fig_grounds_map.png}, \file{fig_revisitation.png}, \file{fig_seasonality.png}.
+\end{todolist}
+
+\section*{Smaller things (after the big items)}
+
+\begin{todolist}
+    \item Placeholders: X / N / Y / Z in the abstract and fleet sizes; ``CTE OTHER STUFF HERE'' in the speed-threshold paragraph.
+
+    \item Appendix section ``Other Figures and Tables'' is empty.
+
+    \item Voice switches between ``we'' and ``my method''.
+\end{todolist}
+
+\end{document}

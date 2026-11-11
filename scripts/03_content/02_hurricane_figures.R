@@ -108,22 +108,3 @@ ggsave(here("results/img/fig_grounds_exposed_by_year.png"),
 ggsave(here("results/img/fig_pct_grounds_exposed_by_year.png"),
        p_pct, width = 10, height = 4, dpi = 300, bg = "transparent")
 
-## 2. HURRICANES PER GROUND ###################################################
-
-# Count distinct hurricanes per ground per year
-hur_per_ground <- exposure |>
-  distinct(storm_year, storm_name, gear_type, vessel_rnpa, cluster) |>
-  group_by(storm_year, gear_type, vessel_rnpa, cluster) |>
-  summarise(n_hurricanes = n(), .groups = "drop") |>
-  rename(year = storm_year)
-
-# Summary table
-hur_summary <- hur_per_ground |>
-  group_by(year, gear_type) |>
-  summarise(
-    n_grounds = n(),
-    mean_hurricanes = mean(n_hurricanes),
-    median_hurricanes = median(n_hurricanes),
-    max_hurricanes = max(n_hurricanes),
-    .groups = "drop"
-  )
