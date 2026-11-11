@@ -1,15 +1,15 @@
 all: figures tables
 
-figures: results/img/fig_grounds_map.png results/img/fig_space_utilization.png results/img/fig_revisitation.png results/img/fig_seasonality.png results/img/fig_pairwise_overlap.png results/img/fig_eps_calibration.png results/img/fig_minpts_distribution.png results/img/fig_grounds_exposed_by_year.png results/img/fig_hurricanes_per_ground.png
+figures: results/img/fig_grounds_map.png results/img/fig_space_utilization.png results/img/fig_revisitation.png results/img/fig_seasonality.png results/img/fig_pairwise_overlap.png results/img/fig_eps_calibration.png results/img/fig_minpts_distribution.png results/img/fig_grounds_exposed_by_year.png results/img/fig_pct_grounds_exposed_by_year.png
 
-tables: results/tab/eps_summary.tex results/tab/gear_summary_table.tex results/tab/gini_concentration.tex results/tab/grounds_exposure_summary.tex results/tab/hurricanes_per_ground.tex
+tables: results/tab/eps_summary.tex results/tab/gear_summary_table.tex results/tab/gini_concentration.tex
 
 makefile-dag.png: Makefile
 	make -Bnd | make2graph -b | dot -Tpng -Gdpi=300 -o makefile-dag.png
 
 ## HURRICANE CONTENT ###########################################################
 
-results/img/fig_grounds_exposed_by_year.png results/img/fig_hurricanes_per_ground.png results/tab/grounds_exposure_summary.tex results/tab/hurricanes_per_ground.tex: scripts/03_content/02_hurricane_figures.R data/processed/hurricane_ground_exposure.rds
+results/img/fig_grounds_exposed_by_year.png results/img/fig_pct_grounds_exposed_by_year.png: scripts/03_content/02_hurricane_figures.R data/processed/hurricane_ground_exposure.rds data/processed/visit_dates.rds data/output/fishing_grounds.rds
 	cd $(<D); Rscript $(<F)
 
 ## CONTENT: CALIBRATION ########################################################

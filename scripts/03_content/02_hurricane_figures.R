@@ -15,9 +15,7 @@
 #
 # Outputs:
 #   results/img/fig_grounds_exposed_by_year.png
-#   results/img/fig_hurricanes_per_ground.png
-#   results/tab/grounds_exposure_summary.tex
-#   results/tab/hurricanes_per_ground.tex
+#   results/img/fig_pct_grounds_exposed_by_year.png
 #
 ################################################################################
 
@@ -28,9 +26,6 @@ pacman::p_load(
   tidyverse,
   patchwork
 )
-
-dir.create(here("results/img"), showWarnings = FALSE, recursive = TRUE)
-dir.create(here("results/tab"), showWarnings = FALSE, recursive = TRUE)
 
 ## Load data -------------------------------------------------------------------
 
@@ -84,14 +79,6 @@ exposure_summary <- active_by_year |>
   replace_na(list(n_grounds_exposed = 0)) |>
   mutate(pct_exposed = 100 * n_grounds_exposed / n_grounds_total)
 
-# Save table
-writeLines(
-  knitr::kable(exposure_summary |> mutate(gear_type = gear_labels[gear_type]),
-               format = "latex", booktabs = TRUE),
-  here("results/tab/grounds_exposure_summary.tex")
-)
-message("Saved: results/tab/grounds_exposure_summary.tex")
-
 # Figure: number and % of grounds exposed
 p_n <- exposure_summary |>
   ggplot(aes(x = year, y = n_grounds_exposed, fill = gear_type)) +
@@ -117,7 +104,9 @@ p_combined <- p_n / p_pct +
 
 ggsave(here("results/img/fig_grounds_exposed_by_year.png"),
        p_combined, width = 10, height = 8, dpi = 300, bg = "transparent")
-message("Saved: results/img/fig_grounds_exposed_by_year.png")
+
+ggsave(here("results/img/fig_pct_grounds_exposed_by_year.png"),
+       p_pct, width = 10, height = 4, dpi = 300, bg = "transparent")
 
 ## 2. HURRICANES PER GROUND ###################################################
 
@@ -138,28 +127,3 @@ hur_summary <- hur_per_ground |>
     max_hurricanes = max(n_hurricanes),
     .groups = "drop"
   )
-
-writeLines(
-  knitr::kable(hur_summary |> mutate(gear_type = gear_labels[gear_type]),
-               format = "latex", booktabs = TRUE),
-  here("results/tab/hurricanes_per_ground.tex")
-)
-message("Saved: results/tab/hurricanes_per_ground.tex")
-
-# Figure: distribution of hurricanes per ground
-p_hur <- hur_per_ground |>
-  ggplot(aes(x = n_hurricanes, fill = gear_type)) +
-  geom_histogram(binwidth = 1, alpha = 0.8, color = "white") +
-  facet_grid(gear_type ~ year,
-             labeller = labeller(gear_type = gear_labels),
-             scales = "free_y") +
-  scale_fill_brewer(palette = "Set2", guide = "none") +
-  labs(x = "Number of hurricanes per ground",
-       y = "Count of grounds",
-       title = "Hurricane exposure frequency by gear type and year") +
-  theme_minimal(base_size = 12) +
-  theme(strip.text.y = element_text(angle = 0))
-
-ggsave(here("results/img/fig_hurricanes_per_ground.png"),
-       p_hur, width = 16, height = 6, dpi = 300, bg = "transparent")
-message("Saved: results/img/fig_hurricanes_per_ground.png")
