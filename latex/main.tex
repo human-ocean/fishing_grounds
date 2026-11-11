@@ -108,8 +108,21 @@ The neighborhood radius (eps parameter) was then calibrated per gear type using 
     \label{fig:knee}
 \end{figure}
 
-%% Add table of min, median, mean, max and sd of eps parameter by vessel class
-\input{results/tab/gear_summary_table}
+\begin{table}[tbh!]
+    \centering
+    \caption{Neighborhood radius (eps, in km) by gear type. Statistics summarize the per-vessel elbow estimates from the $k$-NN distance curves. The median is the gear-level eps used to identify fishing grounds.}
+    \label{tab:eps_parameters}
+    \input{results/tab/eps_summary}
+\end{table}
+
+\begin{table}[tbh!]
+    \centering
+    \small
+    \setlength{\tabcolsep}{3pt}
+    \caption{Summary of fishing grounds by gear type. Statistics are calculated across vessels with at least one fishing ground. Area and utilization are each vessel's totals across its fishing grounds. Points in grounds is the percentage of a vessel's VMS positions that fall inside its fishing grounds, as opposed to being classified as noise by DBSCAN. Gini coefficients measure how unequally fishing hours and area are distributed across fishing grounds.}
+    \label{tab:gear_summary}
+    \input{results/tab/gear_summary_table}
+\end{table}
 
 
 \subsection{Application 1: Space Utilization, Overlap, Re-visitation Rates, and Seasonality}
