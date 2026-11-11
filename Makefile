@@ -24,7 +24,7 @@ results/img/fig_grounds_map.png: scripts/03_content/03_grounds_map.R data/output
 
 ## CONTENT: SPACE UTILIZATION ##################################################
 
-results/img/fig_space_utilization.png results/img/fig_pairwise_overlap.png results/tab/gear_summary_table.tex results/tab/gini_concentration.tex: scripts/03_content/04_space_utilization.R data/processed/vessel_area.rds data/processed/pairwise_overlap.rds data/processed/gini_concentration.rds
+results/img/fig_space_utilization.png results/img/fig_pairwise_overlap.png results/tab/gear_summary_table.tex results/tab/gini_concentration.tex: scripts/03_content/04_space_utilization.R data/processed/vessel_area.rds data/processed/pairwise_overlap.rds data/processed/gini_concentration.rds data/processed/vessel_coverage.rds
 	cd $(<D); Rscript $(<F)
 
 ## CONTENT: REVISITATION #######################################################
@@ -43,6 +43,9 @@ data/processed/vessel_area.rds data/processed/pairwise_overlap.rds data/processe
 	cd $(<D); Rscript $(<F)
 
 data/processed/visit_dates.rds data/processed/inter_visit_intervals.rds data/processed/ground_seasonality.rds: scripts/02_analysis/04_revisitation_rates.R data/output/vessel_params.rds
+	cd $(<D); Rscript $(<F)
+
+data/processed/vessel_coverage.rds: scripts/02_analysis/06_ground_coverage.R data/output/fishing_grounds.rds data/processed/vessel_summary.rds
 	cd $(<D); Rscript $(<F)
 
 data/output/fishing_grounds.rds data/output/vessel_params.rds: scripts/02_analysis/02_identify_grounds.R data/output/gear_eps.rds

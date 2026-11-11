@@ -25,6 +25,9 @@ pacman::p_load(
   tidyverse
 )
 
+# Keeps the jitter in the eps boxplot identical across runs
+set.seed(1)
+
 dir.create(here("results/img"), showWarnings = FALSE, recursive = TRUE)
 dir.create(here("results/tab"), showWarnings = FALSE, recursive = TRUE)
 
@@ -95,6 +98,7 @@ ggsave(
 eps_summary <- per_vessel_eps |>
   group_by(gear_type) |>
   summarise(
+    n_vessels = n(),
     min = round(min(vessel_eps) / 1e3, 1),
     median = round(median(vessel_eps) / 1e3, 1),
     mean = round(mean(vessel_eps) / 1e3, 1),
@@ -105,7 +109,9 @@ eps_summary <- per_vessel_eps |>
   mutate(gear_type = gear_labels[gear_type])
 
 writeLines(
-  knitr::kable(eps_summary, format = "latex", booktabs = TRUE),
+  knitr::kable(eps_summary, format = "latex", booktabs = TRUE, escape = FALSE,
+               col.names = c("Gear type", "Vessels (\\#)", "Min", "Median",
+                             "Mean", "Max", "SD")),
   here("results/tab/eps_summary.tex")
 )
 

@@ -15,6 +15,7 @@
 #   data/processed/vessel_area.rds
 #   data/processed/pairwise_overlap.rds
 #   data/processed/gini_concentration.rds
+#   data/processed/vessel_coverage.rds
 #
 ################################################################################
 
@@ -32,6 +33,7 @@ dir.create(here("results/tab"), showWarnings = FALSE, recursive = TRUE)
 vessel_area <- read_rds(here("data/processed/vessel_area.rds"))
 overlap_results <- read_rds(here("data/processed/pairwise_overlap.rds"))
 gini <- read_rds(here("data/processed/gini_concentration.rds"))
+vessel_coverage <- read_rds(here("data/processed/vessel_coverage.rds"))
 
 gear_labels <- c(shrimp_trawl = "Shrimp trawl",
                  set_longline = "Set longline",
@@ -107,6 +109,16 @@ writeLines(
   here("results/tab/gini_concentration.tex")
 )
 
+# Vessels without grounds are excluded so the share is over the same vessels
+# as every other column in the table
+gear_coverage <- vessel_coverage |>
+  filter(n_grounds > 0) |>
+  group_by(gear_type) |>
+  summarise(
+    median_share_pts = round(100 * median(share_pts), 1),
+    .groups = "drop"
+  )
+
 gear_table <- vessel_area |>
   group_by(gear_type) |>
   summarise(
@@ -117,16 +129,29 @@ gear_table <- vessel_area |>
     median_hours = round(median(total_fg_hours), 1),
     .groups = "drop"
   ) |>
+  left_join(gear_coverage, by = "gear_type") |>
   left_join(gini, by = "gear_type") |>
-  mutate(gear_type = gear_labels[gear_type])
+  mutate(
+    gear_type = gear_labels[gear_type],
+    across(starts_with("gini"), \(x) round(x, 2))
+  )
+
+# Headers are stacked over several lines so the table fits the text width
+stack_header <- function(...) {
+  paste0("\\shortstack[r]{", paste(..., sep = "\\\\"), "}")
+}
 
 writeLines(
-  knitr::kable(gear_table, format = "latex", booktabs = TRUE,
-               col.names = c("Gear type", "Vessels (#)",
-                             "Total grounds (#)", "Median grounds (#)",
-                             "Median area (km\\textsupersctipt{2})", "Median utilization (hours)",
-                             "Gini utilization",
-                             "Gini area")),
+  knitr::kable(gear_table, format = "latex", booktabs = TRUE, escape = FALSE,
+               col.names = c("Gear type",
+                             stack_header("Vessels", "(\\#)"),
+                             stack_header("Total", "grounds", "(\\#)"),
+                             stack_header("Median", "grounds", "(\\#)"),
+                             stack_header("Median", "area", "(km\\textsuperscript{2})"),
+                             stack_header("Median", "utilization", "(hours)"),
+                             stack_header("Median", "points in", "grounds (\\%)"),
+                             stack_header("Gini", "utilization"),
+                             stack_header("Gini", "area"))),
   here("results/tab/gear_summary_table.tex")
 )
 
